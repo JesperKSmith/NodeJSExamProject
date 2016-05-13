@@ -5,23 +5,23 @@ var ObjectId = require('mongodb').ObjectID;
 
 var url = 'mongodb://admin:1234@ds036178.mlab.com:36178/projectdatabase';
 
-// route to handle all users
-app.get('/users', function(req, res) {
+// route to get all recipes
+app.get('/recipes', function(req, res) {
     MongoClient.connect(url, function(err, db) {
 
-        var collection = db.collection('Users');
+        var recipes = db.collection('recipes');
 
-        collection.find({}).toArray(function(err, data) {
-
+        recipes.find({}).toArray(function(err, data) {
             res.send(data);
             db.close();
+           
         });
     });
 });
 
 
-// Rote to handle single user
-app.get('/users/:id', function(req, res) {
+// Route to handle single recipe
+app.get('/recipes/:id', function(req, res) {
 
     if (req.params.id.length === 12 || req.params.id.length === 24) {
         MongoClient.connect(url, function(err, db) {
@@ -33,13 +33,13 @@ app.get('/users/:id', function(req, res) {
                 return;
             }
 
-            var collection = db.collection('users');
+            var collection = db.collection('recipes');
 
             collection.findOne({ '_id': ObjectId(req.params.id) }, function(err, data) {
 
                 if (data === null) {
                     res.status(404);
-                    res.send({ "msg": "User Not Found" });
+                    res.send({ "msg": "Recipe Not Found" });
                 } else {
                     res.send(data);
                 }
@@ -55,17 +55,17 @@ app.get('/users/:id', function(req, res) {
 
 });
 
-// Delete single user route
+// Delete single recipe route
 
-app.delete('/users', function(req, res) {
+app.delete('/recipes/:id', function(req, res) {
 
     MongoClient.connect(url, function(err, db) {
 
-        var collection = db.collection('users');
+        var collection = db.collection('recipes');
 
-        collection.remove(req.body, function(err, data) {
+        collection.remove({'_id' : ObjectId(req.params.id)}, function(err, data) {
 
-            res.send({ 'msg': 'user deleted' });
+            res.send({ 'msg': 'recipe deleted' });
             db.close();
         });
     });
@@ -73,31 +73,29 @@ app.delete('/users', function(req, res) {
 
 // Route that handles creation of new user
 
-app.post('/users', function(req, res) {
+app.post('/recipes', function(req, res) {
     MongoClient.connect(url, function(err, db) {
-
-        var collection = db.collection('users');
+        var collection = db.collection('recipes');
 
         collection.insert(req.body, function(err, data) {
-
-            res.send({ 'msg': 'user created' });
+            res.send({ 'msg': 'recipe created' });
             db.close();
         });
     });
 });
 
-// Route that handles updates of a user
+// Route that handles updates of a recipe
 
-app.put('/users/:id', function(req, res) {
+app.put('/recipes/:id', function(req, res) {
     MongoClient.connect(url, function(err, db) {
 
-        var collection = db.collection('users');
+        var collection = db.collection('recipes');
 
         collection.update({ '_id': ObjectId(req.params.id) }, {
             $set: req.body
         }, function(err, data) {
 
-            res.send({ 'msg': 'user updated' });
+            res.send({ 'msg': 'recipe updated' });
             db.close();
         });
     });

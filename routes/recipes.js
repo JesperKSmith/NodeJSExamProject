@@ -8,10 +8,17 @@ var url = 'mongodb://admin:1234@ds036178.mlab.com:36178/projectdatabase';
 // route to get all recipes
 app.get('/recipes', function(req, res) {
     MongoClient.connect(url, function(err, db) {
-
+        if (err) 
+        {
+            res.status(500);
+            res.send({'msg' : 'Internal Server Error'});
+            db.close();
+            return;
+        }
         var recipes = db.collection('recipes');
 
         recipes.find({}).toArray(function(err, data) {
+            res.status(200);
             res.send(data);
             db.close();
            
@@ -41,6 +48,7 @@ app.get('/recipes/:id', function(req, res) {
                     res.status(404);
                     res.send({ "msg": "Recipe Not Found" });
                 } else {
+                    res.status(200);
                     res.send(data);
                 }
 
@@ -60,11 +68,17 @@ app.get('/recipes/:id', function(req, res) {
 app.delete('/recipes/:id', function(req, res) {
 
     MongoClient.connect(url, function(err, db) {
-
+        if (err) 
+        {
+            res.status(500);
+            res.send({'msg' : 'Internal Server Error'});
+            db.close();
+            return;
+        }
         var collection = db.collection('recipes');
 
         collection.remove({'_id' : ObjectId(req.params.id)}, function(err, data) {
-
+            res.status(200);
             res.send({ 'msg': 'recipe deleted' });
             db.close();
         });
@@ -75,9 +89,17 @@ app.delete('/recipes/:id', function(req, res) {
 
 app.post('/recipes', function(req, res) {
     MongoClient.connect(url, function(err, db) {
+        if (err) 
+        {
+            res.status(500);
+            res.send({'msg' : 'Internal Server Error'});
+            db.close();
+            return;
+        }
         var collection = db.collection('recipes');
 
         collection.insert(req.body, function(err, data) {
+            res.status(200);
             res.send({ 'msg': 'recipe created' });
             db.close();
         });
@@ -88,13 +110,19 @@ app.post('/recipes', function(req, res) {
 
 app.put('/recipes/:id', function(req, res) {
     MongoClient.connect(url, function(err, db) {
-
+        if (err) 
+        {
+            res.status(500);
+            res.send({'msg' : 'Internal Server Error'});
+            db.close();
+            return;
+        }        
         var collection = db.collection('recipes');
 
         collection.update({ '_id': ObjectId(req.params.id) }, {
             $set: req.body
         }, function(err, data) {
-
+            res.status(200);
             res.send({ 'msg': 'recipe updated' });
             db.close();
         });

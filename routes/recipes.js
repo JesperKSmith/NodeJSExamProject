@@ -121,12 +121,7 @@ app.put('/recipes/:id', function(req, res) {
 
         collection.update({ '_id': ObjectId(req.params.id) }, {
             //$set: req.body 
-            'name': req.body.name,
-            'cuisine': req.body.cuisine,
-            'category': req.body.category,
-            'time': req.body.time,
-            'description': req.body.description,
-            'link': req.body.link
+            'name': req.body.name
         }, function(err, data) {
             res.status(200);
             //res.send({ 'msg': ''+ req.body});

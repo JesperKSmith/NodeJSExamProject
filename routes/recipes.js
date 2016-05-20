@@ -124,7 +124,7 @@ app.put('/recipes/:id', function(req, res) {
             'name': 'navnetHer'
         }, function(err, data) {
             res.status(200);
-            res.send({ 'msg': ''+ req.body});
+            //res.send({ 'msg': ''+ req.body});
             res.send({ 'msg': 'recipe updated' });
             db.close();
         });

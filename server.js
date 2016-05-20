@@ -14,7 +14,7 @@ app.use(BodyParser.json());
 
 app.use(users);
 app.use(recipes);
-app.use(cors);
+app.use(cors());
 app.use(function(req, res) {
     res.status(404);
     res.send({ 'msg': 'Page Not Found' });

@@ -120,7 +120,8 @@ app.put('/recipes/:id', function(req, res) {
         var collection = db.collection('recipes');
 
         collection.update({ '_id': ObjectId(req.params.id) }, {
-            $set: req.body
+            //$set: req.body
+            'name': 'navnetHer';
         }, function(err, data) {
             res.status(200);
             res.send({ 'msg': ''+ req.body});

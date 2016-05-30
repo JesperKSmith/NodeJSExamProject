@@ -100,7 +100,7 @@ app.post('/recipes', function(req, res) {
 
         collection.insert(req.body, function(err, data) {
             res.status(200);
-            res.send({ 'msg': 'recipe created' });
+        //    res.send({ 'msg': 'recipe created' });
             res.send({ 'id' : data._id});
             db.close();
         });

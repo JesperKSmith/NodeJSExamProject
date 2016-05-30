@@ -102,7 +102,7 @@ app.post('/recipes', function(req, res) {
             res.status(200);
             console.log(data);
         //    res.send({ 'msg': 'recipe created' });
-            res.send({ 'id' : data.id });
+            res.send({ 'id' : data });
             db.close();
         });
     });

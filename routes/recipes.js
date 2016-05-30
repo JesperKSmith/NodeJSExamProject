@@ -85,7 +85,7 @@ app.delete('/recipes/:id', function(req, res) {
     });
 });
 
-// Route that handles creation of new user
+// Route that handles creation of new recipe
 
 app.post('/recipes', function(req, res) {
     MongoClient.connect(url, function(err, db) {
@@ -101,10 +101,10 @@ app.post('/recipes', function(req, res) {
         collection.insert(req.body, function(err, data) {
             res.status(200);
             console.log(data);
-            res.send({ 'msg': 'recipe created',
+            res.send({ 
+                        'msg': 'recipe created',
                         'id' : data.insertedIds[0]
                     });
-            res.send({ 'id' : data.insertedIds[0] });
             db.close();
         });
     });
